@@ -12,24 +12,23 @@ const Page = () => {
     const [allQuizes, setAllQuizes] = useState<IQuiz[]>([]);
 
     useEffect(() => {
-
         const fetchQuizes = async () => {
             try {
                 const response = await axios.get(`/api/users/${session?.user.id}/quizzes`);
                 const data = await response.data;
 
-                // setAllQuizes(Array.isArray(data.data) ? data.data : []);
-                setAllQuizes(data.data)
-
+                setAllQuizes(data.data);
             } catch (error) {
                 console.error("Failed to fetch quizzes:", error);
                 setAllQuizes([]);
             }
+        };
+
+        if (session?.user.id) {
+            fetchQuizes();
         }
+    }, [session?.user.id]);
 
-        fetchQuizes();
-
-    }, []);
 
     console.log(allQuizes);
 

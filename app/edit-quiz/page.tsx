@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
@@ -127,86 +127,88 @@ export default function Page() {
                     <CardDescription>Edit the form below to update the existing quiz.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <div className="grid gap-6">
-                            <div className="grid gap-2">
-                                <Label htmlFor="title">Quiz Title</Label>
-                                <Input id="title" type="text" placeholder="Enter the quiz title" {...register("title")} />
-                            </div>
-                            <div className="grid gap-2">
-                                <Label htmlFor="description">Description</Label>
-                                <Textarea id="description" placeholder="Enter a description for the quiz" {...register("description")} />
-                            </div>
-                            <div className="grid gap-4">
-                                <div className="flex items-center justify-between">
-                                    <h3 className="text-lg font-medium">Questions</h3>
-                                    <Button type="button" onClick={addQuestion}>Add Question</Button>
+                    <Suspense fallback={<div>Loading quiz details...</div>}>
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                            <div className="grid gap-6">
+                                <div className="grid gap-2">
+                                    <Label htmlFor="title">Quiz Title</Label>
+                                    <Input id="title" type="text" placeholder="Enter the quiz title" {...register("title")} />
                                 </div>
-                                {questions.map((question, index) => (
-                                    <div key={index} className="grid gap-4 border-t pt-4">
-                                        <div className="grid gap-2">
-                                            <Label htmlFor={`questions[${index}].text`}>Question {index + 1}</Label>
-                                            <Input
-                                                id={`questions[${index}].text`}
-                                                type="text"
-                                                placeholder="Enter the question text"
-                                                value={question.question}
-                                                onChange={(e) => updateQuestion(index, "question", e.target.value)}
-                                            />
-                                        </div>
-                                        <div className="grid gap-2">
-                                            <Label>Options</Label>
-                                            <div className="grid grid-cols-2 gap-4">
-                                                {question.options.map((option, optionIndex) => (
-                                                    <Input
-                                                        key={optionIndex}
-                                                        type="text"
-                                                        placeholder={`Option ${optionIndex + 1}`}
-                                                        value={option}
-                                                        onChange={(e) => {
-                                                            const updatedOptions = [...question.options];
-                                                            updatedOptions[optionIndex] = e.target.value;
-                                                            updateQuestion(index, "options", updatedOptions);
-                                                        }}
-                                                    />
-                                                ))}
-                                            </div>
-                                        </div>
-                                        <div className="grid gap-2">
-                                            <Label htmlFor={`questions[${index}].correct`}>Correct Answer</Label>
-                                            <Controller
-                                                control={control}
-                                                name={`questions.${index}.correctAnswer`}
-                                                render={({ field }) => (
-                                                    <Select
-                                                        value={String(field.value) || ""}
-                                                        onValueChange={(value) => field.onChange(parseInt(value))}
-                                                    >
-                                                        <SelectTrigger>
-                                                            <SelectValue placeholder="Select correct answer" />
-                                                        </SelectTrigger>
-                                                        <SelectContent>
-                                                            {question.options.map((_, optionIndex) => (
-                                                                <SelectItem key={optionIndex} value={optionIndex.toString()}>
-                                                                    Option {optionIndex + 1}
-                                                                </SelectItem>
-                                                            ))}
-                                                        </SelectContent>
-                                                    </Select>
-                                                )}
-                                            />
-                                        </div>
-                                        <Button variant="ghost" type="button" onClick={() => removeQuestion(index)} className="justify-start">
-                                            Remove Question
-                                        </Button>
+                                <div className="grid gap-2">
+                                    <Label htmlFor="description">Description</Label>
+                                    <Textarea id="description" placeholder="Enter a description for the quiz" {...register("description")} />
+                                </div>
+                                <div className="grid gap-4">
+                                    <div className="flex items-center justify-between">
+                                        <h3 className="text-lg font-medium">Questions</h3>
+                                        <Button type="button" onClick={addQuestion}>Add Question</Button>
                                     </div>
-                                ))}
+                                    {questions.map((question, index) => (
+                                        <div key={index} className="grid gap-4 border-t pt-4">
+                                            <div className="grid gap-2">
+                                                <Label htmlFor={`questions[${index}].text`}>Question {index + 1}</Label>
+                                                <Input
+                                                    id={`questions[${index}].text`}
+                                                    type="text"
+                                                    placeholder="Enter the question text"
+                                                    value={question.question}
+                                                    onChange={(e) => updateQuestion(index, "question", e.target.value)}
+                                                />
+                                            </div>
+                                            <div className="grid gap-2">
+                                                <Label>Options</Label>
+                                                <div className="grid grid-cols-2 gap-4">
+                                                    {question.options.map((option, optionIndex) => (
+                                                        <Input
+                                                            key={optionIndex}
+                                                            type="text"
+                                                            placeholder={`Option ${optionIndex + 1}`}
+                                                            value={option}
+                                                            onChange={(e) => {
+                                                                const updatedOptions = [...question.options];
+                                                                updatedOptions[optionIndex] = e.target.value;
+                                                                updateQuestion(index, "options", updatedOptions);
+                                                            }}
+                                                        />
+                                                    ))}
+                                                </div>
+                                            </div>
+                                            <div className="grid gap-2">
+                                                <Label htmlFor={`questions[${index}].correct`}>Correct Answer</Label>
+                                                <Controller
+                                                    control={control}
+                                                    name={`questions.${index}.correctAnswer`}
+                                                    render={({ field }) => (
+                                                        <Select
+                                                            value={String(field.value) || ""}
+                                                            onValueChange={(value) => field.onChange(parseInt(value))}
+                                                        >
+                                                            <SelectTrigger>
+                                                                <SelectValue placeholder="Select correct answer" />
+                                                            </SelectTrigger>
+                                                            <SelectContent>
+                                                                {question.options.map((_, optionIndex) => (
+                                                                    <SelectItem key={optionIndex} value={optionIndex.toString()}>
+                                                                        Option {optionIndex + 1}
+                                                                    </SelectItem>
+                                                                ))}
+                                                            </SelectContent>
+                                                        </Select>
+                                                    )}
+                                                />
+                                            </div>
+                                            <Button variant="ghost" type="button" onClick={() => removeQuestion(index)} className="justify-start">
+                                                Remove Question
+                                            </Button>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
-                        <div className="flex justify-end mt-6">
-                            <Button type="submit">Update Quiz</Button>
-                        </div>
-                    </form>
+                            <div className="flex justify-end mt-6">
+                                <Button type="submit">Update Quiz</Button>
+                            </div>
+                        </form>
+                    </Suspense>
                 </CardContent>
             </Card>
         </div>

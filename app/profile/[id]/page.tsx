@@ -24,24 +24,23 @@ const Page = ({ params }: { params: Params }) => {
     console.log(image);
 
     useEffect(() => {
-
         const fetchQuizes = async () => {
             try {
                 const response = await axios.get(`/api/users/${userId}/quizzes`);
                 const data = await response.data;
 
-                // setAllQuizes(Array.isArray(data.data) ? data.data : []);
-                setAllQuizes(data.data)
-
+                setAllQuizes(data.data);
             } catch (error) {
                 console.error("Failed to fetch quizzes:", error);
                 setAllQuizes([]);
             }
+        };
+
+        if (userId) {
+            fetchQuizes();
         }
+    }, [userId]);
 
-        fetchQuizes();
-
-    }, []);
 
     console.log(allQuizes);
 

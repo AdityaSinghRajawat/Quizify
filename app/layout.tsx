@@ -9,7 +9,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Quizler",
   description: "Quizler simplifies the process of creating, managing, and sharing quizzes. Our user-friendly interface and customizable templates make quiz creation effortless. Ideal for educators, trainers, and quiz enthusiasts, Quizify offers a seamless experience to craft engaging and interactive quizzes. Join us and transform the way you create quizzes today!",
-  icons: '/fav.png'
+  icons: {
+    icon: '/fav.png',
+  },
 };
 
 export default function RootLayout({
