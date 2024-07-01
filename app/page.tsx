@@ -108,12 +108,12 @@ export default function Page() {
 
         <section
           className="w-full h-screen bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: 'url("/quiz.webp")' }}
+          style={{ backgroundImage: 'url("/cube.jpg")' }}
         >
           <div className="container px-4 md:px-6 text-center h-full flex flex-col justify-center items-center">
             <div className="space-y-4">
               <h1 className="text-4xl font-bold tracking-tighter text-primary-foreground sm:text-5xl md:text-6xl">
-                Unlock Your Knowledge with Quizify
+                Unlock Your Knowledge with Quizler
               </h1>
               <p className="max-w-[700px] mx-auto text-primary-foreground/80 md:text-xl">
                 Discover a world of engaging quizzes, test your skills, and challenge yourself across a variety of
@@ -186,11 +186,11 @@ export default function Page() {
 
               {searchedResults?.length !== 0 ? (
                 searchedResults?.map((quiz, index) => (
-                  <QuizCard key={index} quiz={quiz} />
+                  <QuizCard key={index} quiz={quiz} allQuizes={allQuizes} setAllQuizes={setAllQuizes} />
                 ))
               ) : (
                 allQuizes?.map((quiz, index) => (
-                  <QuizCard key={index} quiz={quiz} />
+                  <QuizCard key={index} quiz={quiz} allQuizes={allQuizes} setAllQuizes={setAllQuizes} />
                 ))
               )}
 

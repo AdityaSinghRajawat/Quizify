@@ -6,12 +6,25 @@ import { usePathname, useRouter } from 'next/navigation';
 import { IQuiz } from '@/models/Quiz';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 interface QuizCardProps {
-    quiz: IQuiz
+    quiz: IQuiz,
+    allQuizes: IQuiz[],
+    setAllQuizes: (quizes: IQuiz[]) => void;
 }
 
-const QuizCard = ({ quiz }: QuizCardProps) => {
+const QuizCard = ({ quiz, allQuizes, setAllQuizes }: QuizCardProps) => {
 
     const router = useRouter();
     const pathName = usePathname();
@@ -22,14 +35,16 @@ const QuizCard = ({ quiz }: QuizCardProps) => {
     }
 
     const handleDelete = async (quiz: IQuiz) => {
-        const hasConfirmed = confirm("Are you sure you want to delete this prompt?");
 
-        if (hasConfirmed) {
-            try {
-                await axios.delete(`/api/quiz/${String(quiz._id).toString()}`);
-            } catch (error) {
-                console.log(error);
-            }
+        try {
+            await axios.delete(`/api/quiz/${String(quiz._id).toString()}`);
+
+            const filteredQuizzes = allQuizes.filter((p) => p._id !== quiz._id);
+
+            setAllQuizes(filteredQuizzes);
+
+        } catch (error) {
+            console.log(error);
         }
     }
 
@@ -59,12 +74,32 @@ const QuizCard = ({ quiz }: QuizCardProps) => {
                 <Button onClick={() => handlePlay(quiz)}>Play Now</Button>
                 {session?.user?.id === String(quiz.creator?._id) && pathName === '/profile' && (
                     <div className="flex space-x-2">
+
                         <Button variant="ghost" className="p-2" aria-label="Edit" onClick={() => handleEdit(quiz)}>
                             <Edit className="w-4 h-4" />
                         </Button>
-                        <Button variant="ghost" className="p-2" aria-label="Delete" onClick={() => handleDelete(quiz)}>
-                            <Trash className="w-4 h-4" />
-                        </Button>
+
+                        <AlertDialog>
+                            <AlertDialogTrigger>
+                                <Button variant="ghost" className="p-2" aria-label="Delete">
+                                    <Trash className="w-4 h-4" />
+                                </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                        This action cannot be undone. This will permanently delete your Quiz
+                                    </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                    <AlertDialogAction onClick={() => handleDelete(quiz)}>Continue</AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
+
+
                     </div>
                 )}
             </CardContent>

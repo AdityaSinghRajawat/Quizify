@@ -55,7 +55,7 @@ export default function Page() {
                 questions: values.questions,
             });
 
-            if (response.status === 200) {
+            if (response.status === 201) {
                 router.push("/");
             }
         } catch (error) {

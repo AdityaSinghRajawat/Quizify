@@ -6,7 +6,7 @@ import axios from 'axios'
 import { useSession } from 'next-auth/react'
 import React, { useEffect, useState } from 'react'
 
-const page = () => {
+const Page = () => {
 
     const { data: session } = useSession();
     const [allQuizes, setAllQuizes] = useState<IQuiz[]>([]);
@@ -42,9 +42,10 @@ const page = () => {
                 image={session?.user.image || ''}
                 allQuizes={allQuizes}
                 heading='Your Quizzes'
+                setAllQuizes={setAllQuizes}
             />
         </>
     )
 }
 
-export default page
+export default Page

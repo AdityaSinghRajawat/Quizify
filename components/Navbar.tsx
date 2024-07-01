@@ -39,7 +39,7 @@ const Navbar: React.FC = () => {
                     height={30}
                     className="object-contain"
                 /> */}
-                <p className="text-3xl font-semibold">Quizify</p>
+                <p className="text-3xl font-semibold">Quizler</p>
             </Link>
 
             {/* Desktop Navigation */}

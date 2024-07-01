@@ -14,13 +14,14 @@ type ProfileProps = {
     email: string;
     image: string;
     allQuizes: IQuiz[],
-    heading: string
+    heading: string,
+    setAllQuizes: (quizes: IQuiz[]) => void;
 };
 
-const Profile = ({ name, email, image, allQuizes, heading }: ProfileProps) => {
+const Profile = ({ name, email, image, allQuizes, heading, setAllQuizes }: ProfileProps) => {
 
     return (
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 mt-16">
             <div className="flex items-center gap-6">
                 <Avatar className="w-20 h-20">
                     <AvatarImage src={image} />
@@ -43,7 +44,7 @@ const Profile = ({ name, email, image, allQuizes, heading }: ProfileProps) => {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                 {allQuizes?.map((quiz, index) => (
-                    <QuizCard key={index} quiz={quiz} />
+                    <QuizCard key={index} quiz={quiz} allQuizes={allQuizes} setAllQuizes={setAllQuizes} />
                 ))}
             </div>
         </div>

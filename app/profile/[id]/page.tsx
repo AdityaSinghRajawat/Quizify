@@ -10,7 +10,7 @@ interface Params {
     id: string;
 }
 
-const page = ({ params }: { params: Params }) => {
+const Page = ({ params }: { params: Params }) => {
 
     const searchParams = useSearchParams();
 
@@ -54,9 +54,10 @@ const page = ({ params }: { params: Params }) => {
                 image={image || ''}
                 allQuizes={allQuizes}
                 heading={`${name} Quizzes`}
+                setAllQuizes={setAllQuizes}
             />
         </>
     )
 }
 
-export default page;
+export default Page;

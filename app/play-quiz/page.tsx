@@ -17,7 +17,7 @@ interface Quiz {
     description: string
 }
 
-export default function Component() {
+export default function Page() {
     const [currentQuestion, setCurrentQuestion] = useState<number>(0);
     const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
     const [showResult, setShowResult] = useState<boolean>(false);
@@ -44,7 +44,6 @@ export default function Component() {
     }, [quizId]);
 
     console.log(quiz);
-
 
     const handleAnswerSelect = (index: number) => {
         const newSelectedAnswers = [...selectedAnswers];
@@ -110,7 +109,11 @@ export default function Component() {
                                 </div>
                             </div>
                             <div className="flex justify-end">
-                                <Button onClick={handleNextQuestion}>Next</Button>
+                                {selectedAnswers[currentQuestion] !== undefined && (
+                                    <Button onClick={handleNextQuestion}>
+                                        {currentQuestion < questions.length - 1 ? "Next" : "Submit"}
+                                    </Button>
+                                )}
                             </div>
                         </div>
                     ) : (
@@ -131,4 +134,5 @@ export default function Component() {
         </div>
     );
 }
+
 
