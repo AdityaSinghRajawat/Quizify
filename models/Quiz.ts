@@ -1,6 +1,6 @@
 import mongoose, { Document, Model, Schema } from "mongoose";
 
-interface IQuestion {
+export interface IQuestion {
     question: string;
     options: string[];
     correctAnswer: number;

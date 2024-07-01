@@ -9,6 +9,7 @@ import { Button } from "./ui/button";
 interface Session {
     user: {
         image: string;
+        id: string
     };
 }
 
@@ -29,7 +30,7 @@ const Navbar: React.FC = () => {
     }, []);
 
     return (
-        <nav className="w-full py-4 px-6 bg-transparent backdrop-blur-md flex justify-between items-center border-2 fixed">
+        <nav className="w-full h-16 py-4 px-6 bg-transparent backdrop-blur-md flex justify-between items-center border-2 fixed top-0 left-0 right-0 z-10">
             <Link href='/' className="flex items-center gap-2">
                 {/* <Image
                     src='/assets/images/PromptOasis.svg'
@@ -51,7 +52,7 @@ const Navbar: React.FC = () => {
                         <Button type="button" onClick={() => signOut()} className="btn btn-outline">
                             Sign Out
                         </Button>
-                        <Link href='/profile'>
+                        <Link href={`/profile`}>
                             <Image
                                 src={session?.user.image}
                                 width={37}
@@ -89,7 +90,7 @@ const Navbar: React.FC = () => {
                         />
                         {toggleDropDown && (
                             <div className="absolute top-full mt-2 right-0 w-48 bg-white shadow-md rounded-md p-4">
-                                <Link href='/profile' className="block py-2 text-center" onClick={() => setToggleDropDown(false)}>
+                                <Link href={`/profile`} className="block py-2 text-center" onClick={() => setToggleDropDown(false)}>
                                     My Profile
                                 </Link>
                                 <Link href='/create-quiz' className="block py-2 text-center" onClick={() => setToggleDropDown(false)}>

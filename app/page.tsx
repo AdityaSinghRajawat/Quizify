@@ -7,87 +7,58 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Search } from "lucide-react"
 import QuizCard from "@/components/QuizCard"
 import { useEffect, useState } from "react"
-import { QuizFormData } from "@/interfaces";
 import axios from "axios";
+import { IQuiz } from "@/models/Quiz";
 
 export default function Page() {
 
-  const Quizes = [
+  const categories = [
     {
-      title: "Sample Quiz",
-      description: "This is a sample quiz description",
-      questions: [
-        {
-          question: "What is the capital of France?",
-          options: ["Paris", "London", "Berlin", "Madrid"],
-          correctAnswer: 1,
-        },
-        {
-          question: "What is 2 + 2?",
-          options: ["3", "4", "5", "6"],
-          correctAnswer: 2,
-        },
-      ],
+      name: "Arts & Culture",
+      icon: "🎨"
     },
     {
-      title: "Sample Quiz",
-      description: "This is a sample quiz description",
-      questions: [
-        {
-          question: "What is the capital of France?",
-          options: ["Paris", "London", "Berlin", "Madrid"],
-          correctAnswer: 1,
-        },
-        {
-          question: "What is 2 + 2?",
-          options: ["3", "4", "5", "6"],
-          correctAnswer: 2,
-        },
-      ],
+      name: "Science",
+      icon: "🔬"
     },
     {
-      title: "Sample Quiz",
-      description: "This is a sample quiz description",
-      questions: [
-        {
-          question: "What is the capital of France?",
-          options: ["Paris", "London", "Berlin", "Madrid"],
-          correctAnswer: 1,
-        },
-        {
-          question: "What is 2 + 2?",
-          options: ["3", "4", "5", "6"],
-          correctAnswer: 2,
-        },
-      ],
+      name: "Brain Teasers",
+      icon: "🧠"
     },
     {
-      title: "Sample Quiz",
-      description: "This is a sample quiz description",
-      questions: [
-        {
-          question: "What is the capital of France?",
-          options: ["Paris", "London", "Berlin", "Madrid"],
-          correctAnswer: 1,
-        },
-        {
-          question: "What is 2 + 2?",
-          options: ["3", "4", "5", "6"],
-          correctAnswer: 2,
-        },
-      ],
+      name: "Geography",
+      icon: "🌍"
     },
-  ];
+    {
+      name: "Literature",
+      icon: "📚"
+    },
+    {
+      name: "Entertainment",
+      icon: "🎮"
+    },
+  ]
 
-  const [allQuizes, setAllQuizes] = useState<QuizFormData[]>([]);
+  const [allQuizes, setAllQuizes] = useState<IQuiz[]>([]);
+
+  const [searchText, setSearchText] = useState("");
+  const [searchTimeout, setSearchTimeout] = useState<number | undefined>();
+  const [searchedResults, setSearchedResults] = useState<IQuiz[]>([]);
 
   useEffect(() => {
 
     const fetchQuizes = async () => {
-      const response = await axios.get('/api/quiz');
-      const data = await response.data;
+      try {
+        const response = await axios.get('/api/quiz');
+        const data = await response.data;
 
-      setAllQuizes(data.data);
+        // setAllQuizes(Array.isArray(data.data) ? data.data : []);
+        setAllQuizes(data.data)
+
+      } catch (error) {
+        console.error("Failed to fetch quizzes:", error);
+        setAllQuizes([]);
+      }
     }
 
     fetchQuizes();
@@ -96,10 +67,46 @@ export default function Page() {
 
   console.log(allQuizes);
 
+  const filterQuizes = (searchtext: string) => {
+    const regex = new RegExp(searchtext, "i"); // 'i' flag for case-insensitive search
+    return allQuizes?.filter(
+      (item) =>
+        regex.test(item.title) ||
+        regex.test(item.description) ||
+        regex.test(item.questions[0].question)
+    );
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    clearTimeout(searchTimeout);
+    setSearchText(e.target.value);
+
+  };
+
+  const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    // debounce method
+    setSearchTimeout(
+      setTimeout(() => {
+        const searchResult = filterQuizes(searchText);
+        setSearchedResults(searchResult);
+      }, 500) as unknown as number // Explicitly cast to number
+    );
+  };
+
+  const handleCategoryClick = (category: string) => {
+    setSearchText(category);
+
+    const searchResult = filterQuizes(category);
+    setSearchedResults(searchResult);
+  };
 
   return (
     <div className="flex flex-col min-h-[100dvh]">
+
       <main className="flex-1">
+
         <section
           className="w-full h-screen bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: 'url("/quiz.webp")' }}
@@ -115,7 +122,7 @@ export default function Page() {
               </p>
               <div className="flex justify-center">
                 <Link
-                  href="#"
+                  href="#search"
                   className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                   prefetch={false}
                 >
@@ -125,6 +132,7 @@ export default function Page() {
             </div>
           </div>
         </section>
+
         <section className="w-full py-12 md:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
             <div className="space-y-4 text-center">
@@ -134,69 +142,25 @@ export default function Page() {
               </p>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-8">
-              <Link
-                href="#"
-                className="group flex flex-col items-center justify-center gap-2 p-4 rounded-lg hover:bg-muted transition-colors"
-                prefetch={false}
-              >
-                <div className="bg-primary rounded-full w-12 h-12 flex items-center justify-center text-3xl text-primary-foreground">
-                  🎨
-                </div>
-                <div className="text-sm font-medium group-hover:text-primary transition-colors">Arts &amp; Culture</div>
-              </Link>
-              <Link
-                href="#"
-                className="group flex flex-col items-center justify-center gap-2 p-4 rounded-lg hover:bg-muted transition-colors"
-                prefetch={false}
-              >
-                <div className="bg-primary rounded-full w-12 h-12 flex items-center justify-center text-3xl text-primary-foreground">
-                  🔬
-                </div>
-                <div className="text-sm font-medium group-hover:text-primary transition-colors">Science</div>
-              </Link>
-              <Link
-                href="#"
-                className="group flex flex-col items-center justify-center gap-2 p-4 rounded-lg hover:bg-muted transition-colors"
-                prefetch={false}
-              >
-                <div className="bg-primary rounded-full w-12 h-12 flex items-center justify-center text-3xl text-primary-foreground">
-                  🧠
-                </div>
-                <div className="text-sm font-medium group-hover:text-primary transition-colors">Brain Teasers</div>
-              </Link>
-              <Link
-                href="#"
-                className="group flex flex-col items-center justify-center gap-2 p-4 rounded-lg hover:bg-muted transition-colors"
-                prefetch={false}
-              >
-                <div className="bg-primary rounded-full w-12 h-12 flex items-center justify-center text-3xl text-primary-foreground">
-                  🌍
-                </div>
-                <div className="text-sm font-medium group-hover:text-primary transition-colors">Geography</div>
-              </Link>
-              <Link
-                href="#"
-                className="group flex flex-col items-center justify-center gap-2 p-4 rounded-lg hover:bg-muted transition-colors"
-                prefetch={false}
-              >
-                <div className="bg-primary rounded-full w-12 h-12 flex items-center justify-center text-3xl text-primary-foreground">
-                  📚
-                </div>
-                <div className="text-sm font-medium group-hover:text-primary transition-colors">Literature</div>
-              </Link>
-              <Link
-                href="#"
-                className="group flex flex-col items-center justify-center gap-2 p-4 rounded-lg hover:bg-muted transition-colors"
-                prefetch={false}
-              >
-                <div className="bg-primary rounded-full w-12 h-12 flex items-center justify-center text-3xl text-primary-foreground">
-                  🎮
-                </div>
-                <div className="text-sm font-medium group-hover:text-primary transition-colors">Entertainment</div>
-              </Link>
+              {categories.map((category, index) => (
+                <Link
+                  key={index}
+                  href="#search"
+                  className="group flex flex-col items-center justify-center gap-2 p-4 rounded-lg hover:bg-muted transition-colors"
+                  prefetch={false}
+                  onClick={() => handleCategoryClick(category.name)}
+                >
+                  <div className="bg-primary rounded-full w-12 h-12 flex items-center justify-center text-3xl text-primary-foreground">
+                    {category.icon}
+                  </div>
+                  <div className="text-sm font-medium group-hover:text-primary transition-colors">{category.name}</div>
+                </Link>
+              ))}
+
             </div>
           </div>
         </section>
+
         <section className="w-full py-12 md:py-24 lg:py-32 bg-muted">
           <div className="container px-4 md:px-6">
             <div className="space-y-4 text-center">
@@ -206,21 +170,37 @@ export default function Page() {
               </p>
             </div>
             <div className="mx-auto max-w-md mt-8">
-              <form className="flex gap-2">
-                <Input type="text" placeholder="Search for quizzes" className="flex-1" />
+              <form className="flex gap-2" onSubmit={handleSearchSubmit}>
+                <Input
+                  type="text"
+                  placeholder="Search for quizzes"
+                  className="flex-1"
+                  value={searchText}
+                  onChange={handleSearchChange}
+                />
                 <Button type="submit">
                   <Search className="w-4 h-4" />
                 </Button>
               </form>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-12">
-              {allQuizes.map((quiz, index) => (
-                <QuizCard key={index} title={quiz.title} description={quiz.description} />
-              ))}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-12" id="search">
+
+              {searchedResults?.length !== 0 ? (
+                searchedResults?.map((quiz, index) => (
+                  <QuizCard key={index} quiz={quiz} />
+                ))
+              ) : (
+                allQuizes?.map((quiz, index) => (
+                  <QuizCard key={index} quiz={quiz} />
+                ))
+              )}
+
             </div>
           </div>
         </section>
+
       </main>
+
       <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
         <p className="text-xs text-muted-foreground">&copy; 2024 Quizify. All rights reserved.</p>
         <nav className="sm:ml-auto flex gap-4 sm:gap-6">
@@ -232,6 +212,7 @@ export default function Page() {
           </Link>
         </nav>
       </footer>
+
     </div>
   )
 }
