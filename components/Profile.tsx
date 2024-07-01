@@ -34,12 +34,12 @@ const Profile = ({ name, email, image, allQuizes, heading }: ProfileProps) => {
             <Separator className="my-8" />
             <div className="flex items-center justify-between">
                 <h2 className="text-2xl font-bold">{heading}</h2>
-                <Link href='/create-quiz'>
+                {email.length > 0 && <Link href='/create-quiz'>
                     <Button size="sm">
                         <Plus className="mr-2 h-4 w-4" />
                         Create New Quiz
                     </Button>
-                </Link>
+                </Link>}
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                 {allQuizes?.map((quiz, index) => (

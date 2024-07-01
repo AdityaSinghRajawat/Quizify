@@ -3,7 +3,6 @@
 import Link from "next/link"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { Search } from "lucide-react"
 import QuizCard from "@/components/QuizCard"
 import { useEffect, useState } from "react"

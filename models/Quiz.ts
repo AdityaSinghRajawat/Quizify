@@ -6,11 +6,17 @@ export interface IQuestion {
     correctAnswer: number;
 }
 
+interface User {
+    _id: mongoose.Types.ObjectId;
+    name: string;
+    email: string;
+    image: string;
+}
 export interface IQuiz extends Document {
     title: string;
     description: string;
     questions: IQuestion[];
-    creator: mongoose.Types.ObjectId;
+    creator: User | mongoose.Types.ObjectId;
 }
 
 const quizSchema: Schema = new Schema<IQuiz>({

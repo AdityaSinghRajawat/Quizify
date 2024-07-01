@@ -30,7 +30,7 @@ const Navbar: React.FC = () => {
     }, []);
 
     return (
-        <nav className="w-full h-16 py-4 px-6 bg-transparent backdrop-blur-md flex justify-between items-center border-2 fixed top-0 left-0 right-0 z-10">
+        <nav className="w-full h-16 py-4 px-6 bg-transparent backdrop-blur-md flex justify-between items-center border-1 fixed top-0 left-0 right-0 z-10">
             <Link href='/' className="flex items-center gap-2">
                 {/* <Image
                     src='/assets/images/PromptOasis.svg'
@@ -89,7 +89,7 @@ const Navbar: React.FC = () => {
                             onClick={() => setToggleDropDown((prev) => !prev)}
                         />
                         {toggleDropDown && (
-                            <div className="absolute top-full mt-2 right-0 w-48 bg-white shadow-md rounded-md p-4">
+                            <div className="absolute top-full mt-2 right-0 w-48 bg-transparent backdrop-blur-md border-1 shadow-md rounded-md p-4">
                                 <Link href={`/profile`} className="block py-2 text-center" onClick={() => setToggleDropDown(false)}>
                                     My Profile
                                 </Link>
