@@ -5,7 +5,18 @@
  */
 
 export const publicRoutes = [
-    "/"
+    "/",
+    "/api/quiz",
+    "/play-quiz",
+];
+
+export const nonPublicRoutes = [
+    "/dashboard",
+    "/settings",
+    "/create-quiz",
+    "/edit-quiz",
+    "/profile",
+    "/auth",
 ];
 
 /**
@@ -31,7 +42,7 @@ export const apiAuthPrefix = "/api/auth";
  * @type {string}
  */
 
-export const DEFAULT_LOGIN_REDIECT = "/profile";
+export const DEFAULT_LOGIN_REDIRECT = "/";
 
 /**
  * The The dashboard routes where a user can go after loggedIn
