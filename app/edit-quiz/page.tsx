@@ -104,7 +104,7 @@ function QuizPageContent({ session, router }: QuizPageContentProps) {
             });
 
             if (response.status === 200) {
-                router.push('/');
+                router.push('/profile');
             }
 
         } catch (error) {

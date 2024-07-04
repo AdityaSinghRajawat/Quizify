@@ -55,7 +55,7 @@ export default function Page() {
             });
 
             if (response.status === 201) {
-                router.push("/");
+                router.push("/profile");
             }
         } catch (error) {
             console.error(error);
