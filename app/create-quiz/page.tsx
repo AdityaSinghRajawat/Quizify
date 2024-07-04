@@ -46,7 +46,6 @@ export default function Page() {
     ]);
 
     const onSubmit = async (values: z.infer<typeof QuizSchema>) => {
-        console.log(values);
         try {
             const response = await axios.post("/api/quiz", {
                 creator: session?.user.id,

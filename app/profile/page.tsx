@@ -30,9 +30,6 @@ const Page = () => {
     }, [session?.user.id]);
 
 
-    console.log(allQuizes);
-
-
     return (
         <>
             <Profile

@@ -64,7 +64,6 @@ export default function Page() {
 
   }, []);
 
-  console.log(allQuizes);
 
   const filterQuizes = (searchtext: string) => {
     const regex = new RegExp(searchtext, "i"); // 'i' flag for case-insensitive search

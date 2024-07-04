@@ -20,8 +20,6 @@ const Page = ({ params }: { params: Params }) => {
     const name = searchParams.get("name");
     const image = searchParams.get("image");
 
-    console.log(name);
-    console.log(image);
 
     useEffect(() => {
         const fetchQuizes = async () => {
@@ -40,9 +38,6 @@ const Page = ({ params }: { params: Params }) => {
             fetchQuizes();
         }
     }, [userId]);
-
-
-    console.log(allQuizes);
 
 
     return (

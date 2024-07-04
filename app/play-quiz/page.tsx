@@ -55,7 +55,6 @@ function PlayQuizPage() {
         getQuizDetails();
     }, [quizId, setQuiz]);
 
-    console.log(quiz);
 
     const handleAnswerSelect = (index: number) => {
         const newSelectedAnswers = [...selectedAnswers];

@@ -95,7 +95,6 @@ function QuizPageContent({ session, router }: QuizPageContentProps) {
     }, [quiz]);
 
     const onSubmit = async (values: z.infer<typeof QuizSchema>) => {
-        console.log(values);
         try {
             const response = await axios.patch(`/api/quiz/${quizId}`, {
                 creator: session?.user.id,
