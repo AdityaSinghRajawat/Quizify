@@ -66,7 +66,7 @@ const QuizCard = ({ quiz, allQuizes, setAllQuizes }: QuizCardProps) => {
                     <CardTitle className='mb-3'>{quiz.title}</CardTitle>
                     <CardDescription>{quiz.description}</CardDescription>
                     <p className="text-sm font-semibold text-primary mt-2 cursor-pointer" onClick={handleCreatorClick}>
-                        Created by: {('name' in quiz.creator) ? quiz.creator.name : 'Unknown'}
+                        Created by: {(quiz.creator && 'name' in quiz.creator) ? quiz.creator.name : 'Unknown'}
                     </p>
                 </div>
             </CardHeader>
