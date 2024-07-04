@@ -13,12 +13,11 @@ interface Question {
 
 interface Quiz {
     questions: Question[];
-    title: string,
-    description: string
+    title: string;
+    description: string;
 }
 
 export default function Page() {
-
     // Suspense fallback content
     const fallbackContent = <div>Loading...</div>;
 
@@ -54,7 +53,6 @@ function PlayQuizPage() {
 
         getQuizDetails();
     }, [quizId, setQuiz]);
-
 
     const handleAnswerSelect = (index: number) => {
         const newSelectedAnswers = [...selectedAnswers];
@@ -94,7 +92,6 @@ function PlayQuizPage() {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
             <div className="bg-background rounded-lg border p-12 w-full max-w-2xl mx-auto">
-
                 <div className="space-y-4">
                     <h1 className="text-2xl font-bold">{quiz?.title}</h1>
                     <p className="text-muted-foreground">{quiz?.description}</p>
@@ -107,12 +104,12 @@ function PlayQuizPage() {
                         <div className="space-y-6 mt-8">
                             <div>
                                 <h2 className="text-lg font-bold">{questions[currentQuestion].question}</h2>
-                                <div className="grid grid-cols-2 gap-4 mt-4">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                                     {questions[currentQuestion].options.map((option, index) => (
                                         <Button
                                             key={index}
-                                            className={`rounded-lg px-4 py-2 text-left transition-colors 
-                                                 ${selectedAnswers[currentQuestion] === index ? "bg-black text-white" : "bg-gray-100 text-black hover:bg-gray-200"}`}
+                                            className={`rounded-lg px-4 py-2 text-left transition-colors whitespace-normal break-words 
+                                                ${selectedAnswers[currentQuestion] === index ? "bg-black text-white" : "bg-gray-100 text-black hover:bg-gray-200"}`}
                                             onClick={() => handleAnswerSelect(index)}
                                         >
                                             {option}
