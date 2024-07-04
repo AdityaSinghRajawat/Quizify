@@ -32,13 +32,13 @@ const Navbar: React.FC = () => {
     return (
         <nav className="w-full h-16 py-4 px-6 bg-transparent backdrop-blur-md flex justify-between items-center border-1 fixed top-0 left-0 right-0 z-10">
             <Link href='/' className="flex items-center gap-2">
-                {/* <Image
-                    src='/assets/images/PromptOasis.svg'
+                <Image
+                    src='/fav.png'
                     alt="Quizify Logo"
                     width={30}
                     height={30}
                     className="object-contain"
-                /> */}
+                />
                 <p className="text-3xl font-semibold">Quizler</p>
             </Link>
 
